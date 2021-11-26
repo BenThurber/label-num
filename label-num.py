@@ -91,7 +91,6 @@ def main():
     for table in document.tables:
         for row in table.rows:
             for cell in row.cells:
-                print(dir(cell))
                 for paragraph in cell.paragraphs:
                     paragraph = paragraph_replace_text(paragraph, regex, start_num, '<', '>')
     
