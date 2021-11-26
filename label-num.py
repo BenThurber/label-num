@@ -6,6 +6,9 @@ import tkinter
 from tkinter.filedialog import askopenfilename
 
 
+NUMS = []
+
+
 def get_file_from_dialogue():
     tkinter.Tk().withdraw()
     filename = askopenfilename()
@@ -24,6 +27,7 @@ def paragraph_replace_text(paragraph, regex, start_num, opening_char, closing_ch
     for match in regex.finditer(paragraph.text):
         match_num = int(match.group(0).lstrip(opening_char).rstrip(closing_char))
         label_num = start_num + match_num
+        NUMS.append(label_num)
         # --- calculate how much characters must be shifted to fix the match ---
         padding = (len(str(label_num)) - (match.end() -match.start()) ) *count
 
@@ -97,15 +101,15 @@ def main():
     
     
     file_name, file_extension = os.path.splitext(file_path)
-    file_path_generated = file_name + "_GENERATED" + file_extension
+    file_path_generated = "{0} RANGE {1}-{2}{3}".format(file_name, min(NUMS), max(NUMS), file_extension)
     if os.path.exists(file_path_generated):
-        answer = input('File "{}" alreay exists.  Overwrite? (Y/n): '.format(file_path_generated))
+        answer = input('File "{}" alreay exists.  Overwrite? (Y/n): '.format(os.path.basename(file_path_generated)))
         if answer.upper() != 'Y':
             print("Aborting...")
             return
     
-    print("Writing to {}".format(os.path.basename(file_path_generated)))
-    document.save(file_name + "_GENERATED" + file_extension)
+    print('Writing to "{}"'.format(os.path.basename(file_path_generated)))
+    document.save(file_path_generated)
     print("Done.  Exiting.")
 
 
