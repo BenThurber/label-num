@@ -61,7 +61,7 @@ def paragraph_replace_text(paragraph, regex, start_num, opening_char, closing_ch
 
 if __name__ == "__main__":
     
-    f = open('test.docx', 'rb')
+    f = open('Avery_L7651_WordTemplate.docx', 'rb')
     document = Document(f)
     f.close()
     
@@ -76,6 +76,13 @@ if __name__ == "__main__":
     for paragraph in document.paragraphs:
         paragraph = paragraph_replace_text(paragraph, regex, start_num, '<', '>')
     
+    for table in document.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                print(dir(cell))
+                for paragraph in cell.paragraphs:
+                    paragraph = paragraph_replace_text(paragraph, regex, start_num, '<', '>')
     
-    document.save('test_modified.docx')
+    
+    document.save('Avery_L7651_WordTemplate_modified.docx')
 
