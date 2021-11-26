@@ -66,22 +66,6 @@ def paragraph_replace_text(paragraph, regex, start_num, opening_char, closing_ch
     return paragraph
 
 
-def select_file():
-    filetypes = (
-        ('text files', '*.txt'),
-        ('All files', '*.*')
-    )
-
-    filename = fd.askopenfilename(
-        title='Open a file',
-        initialdir='/',
-        filetypes=filetypes)
-
-    showinfo(
-        title='Selected File',
-        message=filename
-    )
-
 
 
 def main():
