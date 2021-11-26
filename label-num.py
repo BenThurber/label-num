@@ -118,10 +118,16 @@ if __name__ == "__main__":
     document = Document(f)
     f.close()
     
-    regex = re.compile("[0-9]+")
+    regex = re.compile("<[0-9]+>")
+    
+    print("------------------------------")
+    print("----Label-Number-Generator----")
+    print("------------------------------")
+    print()
+    start_num = int(input("Enter the label number to start at: "))
     
     for paragraph in document.paragraphs:
-        paragraph = paragraph_replace_text(paragraph, regex, str(i))
+        paragraph = paragraph_replace_text(paragraph, regex, "new_str")
     
     
     document.save('test_modified.docx')
