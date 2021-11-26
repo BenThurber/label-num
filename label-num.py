@@ -1,6 +1,15 @@
 import re
+import os.path
 from docx import Document
 
+import tkinter
+from tkinter.filedialog import askopenfilename
+
+
+def get_file_from_dialogue():
+    tkinter.Tk().withdraw()
+    filename = askopenfilename()
+    return filename
 
 
 def paragraph_replace_text(paragraph, regex, start_num, opening_char, closing_char):
@@ -57,11 +66,29 @@ def paragraph_replace_text(paragraph, regex, start_num, opening_char, closing_ch
     return paragraph
 
 
+def select_file():
+    filetypes = (
+        ('text files', '*.txt'),
+        ('All files', '*.*')
+    )
+
+    filename = fd.askopenfilename(
+        title='Open a file',
+        initialdir='/',
+        filetypes=filetypes)
+
+    showinfo(
+        title='Selected File',
+        message=filename
+    )
 
 
-if __name__ == "__main__":
+
+def main():
     
-    f = open('Avery_L7651_WordTemplate.docx', 'rb')
+    file_path = get_file_from_dialogue()
+    
+    f = open(file_path, 'rb')
     document = Document(f)
     f.close()
     
@@ -71,6 +98,7 @@ if __name__ == "__main__":
     print("----Label-Number-Generator----")
     print("------------------------------")
     print()
+    print("Generated file is created next to origional file.")
     start_num = int(input("Enter the label number to start at: "))
     
     for paragraph in document.paragraphs:
@@ -84,5 +112,22 @@ if __name__ == "__main__":
                     paragraph = paragraph_replace_text(paragraph, regex, start_num, '<', '>')
     
     
-    document.save('Avery_L7651_WordTemplate_modified.docx')
+    
+    file_name, file_extension = os.path.splitext(file_path)
+    file_path_generated = file_name + "_GENERATED" + file_extension
+    if os.path.exists(file_path_generated):
+        answer = input('File "{}" alreay exists.  Overwrite? (Y/n): '.format(file_path_generated))
+        if answer.upper() != 'Y':
+            print("Aborting...")
+            return
+    
+    print("Writing to {}".format(os.path.basename(file_path_generated)))
+    document.save(file_name + "_GENERATED" + file_extension)
+    print("Done.  Exiting.")
+
+
+
+if __name__ == "__main__":
+    
+    main()
 
